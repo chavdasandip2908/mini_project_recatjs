@@ -1,0 +1,26 @@
+.sidebar-toggle-btn {
+    position: fixed;
+    font-weight: bold;
+    cursor: pointer;
+    color: #fff;
+    top: 20px;
+    left: 245px
+}
+.sidebar-toggle-btn.active {
+    font-weight: bold;
+    color: #000;
+    top: 20px;
+    left: 20px
+}
+
+.sidebar {
+    display: none;
+}
+
+.sidebar.active {
+    display: block;
+}
+
+/* @media (min-width: 768px) {
+    
+} */

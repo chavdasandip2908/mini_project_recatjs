@@ -1,0 +1,50 @@
+.stopwatch {
+  background-color: #282c34;
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.main {
+  text-align: center;
+  background-color: #6367708c;
+  padding:  20px;
+  border-radius: 2px;
+  box-shadow: 0px 0px 12px 0px #ffffff82;
+  min-width:300px;
+}
+
+.bodyPart {
+  margin-bottom: 10px;
+}
+
+.controlsBtn {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-content: center;
+  justify-content: space-around;
+  align-items: center;
+  margin: 20px 0;
+}
+
+.controlsBtn .btn {
+  padding: 7px 10px;
+  color: #000;
+  background-image: linear-gradient(to top right, #353d70, #666da0, #353d70);
+  border: none;
+  border-radius: 2px;
+  color: #fff;
+  font-weight: bold !important;
+  box-shadow: 0px 0px 5px 0px #ffffff82;
+}
+
+
+/* .App-link {
+    color: #61dafb;
+  } */
