@@ -32,8 +32,8 @@ export default function SideBar() {
                         </NavLink>
                     </li>
                     <li className="mb-3">
-                        <NavLink to="/" className="align-items-center text-white text-decoration-none ">
-                            Orders
+                        <NavLink to="/image-gallery" className="align-items-center text-white text-decoration-none ">
+                            Image Gallery
                         </NavLink>
                     </li>
                     <li className="border-top my-3" />
