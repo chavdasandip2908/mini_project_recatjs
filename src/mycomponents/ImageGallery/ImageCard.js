@@ -6,7 +6,7 @@ export default function ImageCard({ image }) {
 
   
   return (
-    <div className="col-4 g-3 rounded overflow-hidden shadow-lg  ">
+    <div className="col-12 col-sm-4 g-3 rounded overflow-hidden shadow-lg  ">
       <img className='w-100 rounded' src={image.webformatURL} alt="loading./.." />
       <div className="px-6 py-4">
         <div className="font-bold text-xl mb-2  px-3 fw-bold ">Photo by <span className='text-primary'>{image.user}</span></div>
@@ -25,12 +25,12 @@ export default function ImageCard({ image }) {
           </li>
         </ul>
       </div>
-      <div className="px-6 py-4">
+      <div className="px-6 py-4 overflow-auto">
         {
           tags.map((tag, index) => (
-            <span className="inline-block bg-secondary rounded-5 px-3 py-1 fw-bold mx-1">
+            <div className=" badge badge-secondary p-1 px-2 mx-1">
               #{tag}
-            </span>
+            </div>
           ))
         }
       </div>

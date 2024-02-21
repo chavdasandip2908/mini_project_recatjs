@@ -1,14 +1,21 @@
 import React from 'react'
+import "../css/meyawo.css"
 
 export default function Home() {
     return (
         <>
-            <div className="main">
-                <div className="header">
-                    <h2>Welcome Back </h2>
-                    <h3>This is Home Page</h3>
+            <header id="home" className="header w-100 " >
+                <div className="overlay"></div>
+                <div className="header-content container">
+                    <h1 className="header-title" >
+                        <span className="up">HI!</span>
+                        <span className="down">I am Sandip Chavda</span>
+                    </h1>
+                    <p className="header-subtitle">WEB DEVELOPMENT</p>
+
+                    {/* <button className="btn btn-primary">Visit My Works</button> */}
                 </div>
-            </div>
+            </header>
         </>
     )
 }
