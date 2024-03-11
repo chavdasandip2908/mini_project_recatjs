@@ -37,6 +37,11 @@ export default function SideBar() {
                             Image Gallery
                         </NavLink>
                     </li>
+                    <li className="mb-3">
+                        <NavLink to="/krishi-cash" className="align-items-center text-white text-decoration-none ">
+                            Krishi Cash
+                        </NavLink>
+                    </li>
                     <li className="border-top my-3" />
                     <li className="mb-3">
                         <NavLink to="/" className="align-items-center text-white text-decoration-none ">
