@@ -72,14 +72,34 @@ const Product = () => {
         ele.classList.toggle("d-none");
     }
 
-    const deleteCrop = (id) => {
+    const updateCropIncome = (id) => {
         console.log(id);
     }
 
-    const [show, setShow] = useState(false);
+    const deleteCropIncome = (id) => {
+        console.log(id);
+    }
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const [editData, setEditData] = useState(null);
+    const [deleteId, setDeleteId] = useState(null);
+
+    const handleEdit = (data) => {
+        setEditData(data);
+    };
+
+    const handleDelete = (id) => {
+        setDeleteId(id);
+    };
+
+    const handleEditSubmit = () => {
+        console.log(editData);
+        setEditData(null);
+    };
+
+    const handleDeleteConfirm = () => {
+        console.log(deleteId);
+        setDeleteId(null);
+    };
 
     return (
         <>
@@ -109,42 +129,15 @@ const Product = () => {
                                         <td>
                                             <button className='btn' onClick={() => { displayAction(item.id) }}><i className="fa-solid fa-ellipsis-vertical"></i></button>
 
-                                            <div className='position-absolute d-none bg-light d-flex flex-column flex-nowrap align-content-center justify-content-center align-items-stretch ' id={item.id}>
+                                            <div onClick={() => { displayAction(item.id) }} className='position-absolute d-none bg-light d-flex flex-column flex-nowrap align-content-center justify-content-center align-items-stretch ' id={item.id}>
                                                 <button type="button" className="border bg-light rounded-1   "
-                                                    onClick={() => handleShow()}> Edit
+                                                    onClick={() => handleEdit(item)}> Edit
                                                 </button>
+
                                                 <button type="button" className="border bg-light rounded-1 "
-                                                    onClick={() => deleteCrop(item.id)}> Delete
+                                                    onClick={() => handleDelete(item.id)}> Delete
                                                 </button>
                                             </div>
-                                            <Modal
-                                                show={show}
-                                                onHide={handleClose}
-                                                backdrop="static"
-                                                keyboard={false}
-                                            >
-                                                <Modal.Body>
-                                                    <Form>
-                                                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                                                            <Form.Label>Email address</Form.Label>
-                                                            <Form.Control type="email" placeholder="Enter email" />
-                                                        </Form.Group>
-
-                                                        <Form.Group className="mb-3" controlId="formBasicPassword">
-                                                            <Form.Label>Password</Form.Label>
-                                                            <Form.Control type="password" placeholder="Password" />
-                                                        </Form.Group>
-                                                    </Form>
-                                                </Modal.Body>
-                                                <Modal.Footer>
-                                                    <button className='btn bg-success text-light' onClick={handleClose}>
-                                                        Submit
-                                                    </button>
-                                                    <button className='btn bg-body-secondary' onClick={handleClose}>
-                                                        Close
-                                                    </button>
-                                                </Modal.Footer>
-                                            </Modal>
                                         </td>
                                     </tr>
                                 )
@@ -153,6 +146,41 @@ const Product = () => {
                     </tbody>
                 </table>
             </div >
+            {/* Edit Popup */}
+            {editData && (
+                <div className="popup position-fixed d-flex justify-content-center align-items-center w-100 mt-2">
+                    <div className="popup-content d-flex flex-column justify-content-center align-items-center bg-secondary-subtle p-2 rounded-1 shadow-lg  ">
+                        <h2>Edit Crop Income</h2>
+                        <div className="mb-3">
+                            <label class="form-label">Price</label>
+                            <input className='form-control' type="text" value={editData.price} onChange={(e) => setEditData({ ...editData, price: e.target.value })} />
+                        </div>
+                        <div className="mb-3">
+                            <label class="form-label">Weight</label>
+                            <input className='form-control' type="number" value={editData.weight} onChange={(e) => setEditData({ ...editData, weight: e.target.value })} />
+                        </div>
+                        <div className='mt-2 d-flex justify-content-end  align-items-center w-100 gap-2 '>
+                            <button className='btn btn-secondary' onClick={() => setEditData(null)}>Cancel</button>
+                            <button className='btn btn-success' onClick={handleEditSubmit}>OK</button>
+                        </div>
+                    </div>
+                </div>
+
+            )}
+
+            {/* Delete Confirmation Popup */}
+            {deleteId && (
+                <div className="popup position-fixed d-flex justify-content-center align-items-center w-100 mt-2">
+                    <div className="popup-content d-flex flex-column justify-content-center align-items-center bg-secondary-subtle p-2 rounded-1 shadow-lg  ">
+                        <h2>Confirm Delete</h2>
+                        <p className='fw-bold '>Are you sure you want to delete this crop income?</p>
+                        <div className='mt-2 d-flex justify-content-end  align-items-center w-100 gap-2 '>
+                            <button className='btn btn-danger' onClick={handleDeleteConfirm}>Yes</button>
+                            <button className='btn btn-secondary' onClick={() => setDeleteId(null)}>No</button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 }
