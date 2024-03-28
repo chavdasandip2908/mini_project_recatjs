@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Modal, Form } from 'react-bootstrap';
 import $ from 'jquery';
 
 const Product = () => {
