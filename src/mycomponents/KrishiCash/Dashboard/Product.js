@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom';
 import $ from 'jquery';
 
+import '../Dashboard/Product.css'
+
 const Product = () => {
 
     const navigate = useNavigate();
@@ -55,14 +57,12 @@ const Product = () => {
     const crops = [{
         "id": "1",
         "date": "12-05-2001",
-        "name": "Product A",
-        "price": "$9.99",
+        "price": "9.99",
         "weight": "30"
     }, {
         "id": "2",
         "date": "14-05-2002",
-        "name": "Product B",
-        "price": "$19.99",
+        "price": "19.99",
         "weight": "15"
     }];
 
@@ -103,7 +103,7 @@ const Product = () => {
     return (
         <>
             <div className="container " >
-                <div className="position-absolute top-0 mt-3 " onClick={() => { navigate('/krishi-cash') }}>
+                <div className="position-absolute top-0 mt-3 cursor-pointer" onClick={() => { navigate('/krishi-cash') }}>
                     <i className="fa-solid fa-arrow-left"></i>
                 </div>
                 <table className="mt-5 table table-bordered table-striped table-responsive-stack" id="tableOne">
@@ -122,13 +122,13 @@ const Product = () => {
                                 return (
                                     <tr key={index}>
                                         <td>{item.date}</td>
-                                        <td>{item.name}</td>
-                                        <td>{item.price}</td>
                                         <td>{item.weight}</td>
+                                        <td>{item.price}</td>
+                                        <td>{(item.weight * item.price).toFixed(2)}</td>
                                         <td>
                                             <button className='btn' onClick={() => { displayAction(item.id) }}><i className="fa-solid fa-ellipsis-vertical"></i></button>
 
-                                            <div onClick={() => { displayAction(item.id) }} className='position-absolute d-none bg-light d-flex flex-column flex-nowrap align-content-center justify-content-center align-items-stretch ' id={item.id}>
+                                            <div onClick={() => { displayAction(item.id) }} className='position-absolute d-none bg-light d-flex flex-column flex-nowrap align-content-center justify-content-center align-items-stretch gap-1 ' id={item.id}>
                                                 <button type="button" className="border bg-light rounded-1   "
                                                     onClick={() => handleEdit(item)}> Edit
                                                 </button>
