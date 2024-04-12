@@ -110,7 +110,7 @@ function Index() {
                                     <h1 className="w-100 text-center text-secondary-emphasis ">{isSignUp ? "Sign up" : "Sign in"}</h1>
                                 </div>
                                 <div className="form-outline mb-4">
-                                    <input type="email" name='email' className="form-control form-control-lg"
+                                    <input type="email" name='email' inputMode='email' className="form-control form-control-lg"
                                         value={userData.email} onChange={handleInputChange} placeholder="Enter a email address" />
                                     <label className="form-label" htmlFor="form3Example3">Email address</label>
                                 </div>

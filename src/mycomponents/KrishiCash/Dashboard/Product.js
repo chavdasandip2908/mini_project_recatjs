@@ -269,11 +269,11 @@ const Product = () => {
                             </div>
                             <div className="mb-3">
                                 <label className="form-label">Price</label>
-                                <input className='form-control' type="text" value={cropData.price} onChange={(e) => setCropData({ ...cropData, price: e.target.value })} placeholder='crop income per mounds' />
+                                <input className='form-control' inputMode='numeric' type="number" value={cropData.price} onChange={(e) => setCropData({ ...cropData, price: e.target.value })} placeholder='crop income per mounds' />
                             </div>
                             <div className="mb-3">
                                 <label className="form-label">Weight</label>
-                                <input className='form-control' type="number" value={cropData.weight} onChange={(e) => setCropData({ ...cropData, weight: e.target.value })} placeholder='crop weight in Kg' />
+                                <input className='form-control' inputMode='numeric'  type="number" value={cropData.weight} onChange={(e) => setCropData({ ...cropData, weight: e.target.value })} placeholder='crop weight in Kg' />
                             </div>
                             <div className='mt-2 d-flex justify-content-end  align-items-center w-100 gap-2 '>
                                 <button className='btn btn-secondary' onClick={() => { closeFormBtn() }}>Cancel</button>

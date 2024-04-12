@@ -259,7 +259,7 @@ const Index = () => {
                         {crops.map(product => (
                             <div key={product._id} className="col-md-3 col-sm-12 my-3" style={{ maxWidth: "22rem" }} >
                                 <div className="card h-100 shadow-sm rounded text-center bg-light ">
-                                    <img src={product.image} alt="" className="card-img-top img-thumbnail cursor-pointer" onClick={() => { handleButtonClick(product._id) }} />
+                                    <img style={{aspectRatio: "16/10",objectFit:"cover"}} src={product.image} alt="" className="card-img-top img-thumbnail cursor-pointer" onClick={() => { handleButtonClick(product._id) }} />
                                     <div className="card-body d-flex flex-column justify-content-between align-items-start">
                                         <div className="card-body w-100  ">
                                             <button className="d-flex flex-row-reverse position-absolute end-0 me-3 btn bg-transparent " onClick={() => { displayAction(product._id) }}><i className="fa-solid fa-ellipsis-vertical"></i></button>
@@ -305,7 +305,7 @@ const Index = () => {
                         </div>
                         <div className="mb-3">
                             <label htmlFor="cropYear" className="form-label">Crop Year</label>
-                            <input type="text" className="form-control" id="cropYear" name="year" value={cropData.year} onChange={handleInputChange} placeholder='enter year for crop' />
+                            <input type="number" inputMode='numeric' className="form-control" id="cropYear" name="year" value={cropData.year} onChange={handleInputChange} placeholder='enter year for crop' />
                         </div>
                         <div className="mb-3">
                             <label htmlFor="cropType" className="form-label">Crop Type</label>
