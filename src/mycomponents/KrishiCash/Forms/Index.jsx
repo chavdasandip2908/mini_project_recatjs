@@ -34,6 +34,7 @@ function Index() {
             const response = await axios.post(`${BEURL}/api/users/register`, userData);
             toast.success(response.data.message, { duration: 3000 });
             setIsLoading(false);
+            setIsSignUp(false);
             // console.log('user register successfully:', response);
         } catch (error) {
             console.error('Error register user:', error);
