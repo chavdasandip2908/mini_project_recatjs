@@ -22,6 +22,7 @@ function App() {
       <BrowserRouter>
         <SideBar />
         <Routes>
+          <Route path="/*" element={<Home />} />
           <Route path="/" element={<Home />} />
           <Route path="/expense-tracker" element={<ExpenseTracker />} />
           <Route path="/stop-watch" element={<StopWatch />} />
