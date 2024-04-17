@@ -5,7 +5,8 @@ import { Grid } from 'react-loader-spinner';
 
 
 import addCropImg from '../Image/additem.png'
-import { BEURL } from './common';
+import DataNotPresentPage from './DataNotPresentPage';
+import { BEURL, signoutHandler } from './common';
 
 import { useNavigate } from 'react-router-dom';
 import '../Dashboard/Product.css'
@@ -22,6 +23,7 @@ const Index = () => {
         'Content-Type': 'application/json'
     }), [token]);
 
+
     const fetchCropData = useCallback(() => {
         setIsLoading(true);
         axios.get(`${BEURL}/api/crops`, { headers })
@@ -29,15 +31,22 @@ const Index = () => {
                 // console.log('Response:', response.data);
                 setCrops(response.data);
                 setIsLoading(false);
-                toast.success("fetch Crops successfully ", { duration: 3000 });
+                // toast.success("fetch Crops successfully ", { duration: 3000 });
 
             })
             .catch(error => {
                 console.error('Error:', error);
-                toast.error(error.message, { duration: 3000 });
+                if (error.code === 'INVALID_TOKEN') {
+                    signoutHandler(navigate);
+                }
+                if (error.isAxiosError && error.response) {
+                    toast.error(error.response.data.error, { duration: 3000 });
+                } else {
+                    toast.error(error.message, { duration: 3000 });
+                }
                 setIsLoading(false);
             });
-    }, [headers]);
+    }, [headers, navigate]);
 
     const updateCropApi = async () => {
         setIsLoading(true);
@@ -49,7 +58,11 @@ const Index = () => {
             // console.log('Crop updated successfully:', response);
         } catch (error) {
             console.error('Error updating crop:', error);
-            toast.error(error.message, { duration: 3000 });
+            if (error.isAxiosError && error.response) {
+                toast.error(error.response.data.error, { duration: 3000 });
+            } else {
+                toast.error(error.message, { duration: 3000 });
+            }
             setIsLoading(false);
         }
     }
@@ -64,7 +77,11 @@ const Index = () => {
             // console.log('Crop added successfully:', response);
         } catch (error) {
             console.error('Error adding crop:', error);
-            toast.error(error.message, { duration: 3000 });
+            if (error.isAxiosError && error.response) {
+                toast.error(error.response.data.error, { duration: 3000 });
+            } else {
+                toast.error(error.message, { duration: 3000 });
+            }
             setIsLoading(false);
         }
     }
@@ -78,22 +95,22 @@ const Index = () => {
             setIsLoading(false);
             // console.log('Crop added successfully:', response);
         } catch (error) {
-            toast.error(error.message, { duration: 3000 });
+            if (error.isAxiosError && error.response) {
+                toast.error(error.response.data.error, { duration: 3000 });
+            } else {
+                toast.error(error.message, { duration: 3000 });
+            }
             console.error('Error adding crop:', error);
             setIsLoading(false);
         }
     }
 
-    const signoutHandler = () => {
-        window.localStorage.removeItem('krishi-cash-user-token');
-        navigate('/krishi-cash');
-    }
+
     useEffect(() => {
         // call api for get all crops
         setToken(window.localStorage.getItem('krishi-cash-user-token'));
         if (window.localStorage.getItem('krishi-cash-user-token')) {
             fetchCropData();
-            console.log("token");
         }
         else {
             navigate('/krishi-cash');
@@ -252,14 +269,22 @@ const Index = () => {
                 <>
                     <div className="row">
                         <div className="col">
-                            <button className='btn btn-danger float-end my-3 mx-3' onClick={() => signoutHandler()}>sign out</button>
+                            <button className='btn btn-danger float-end my-3 mx-3' onClick={() => signoutHandler(navigate)}>sign out</button>
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col">
+                            {
+                                crops.length === 0 &&
+                                <DataNotPresentPage />
+                            }
                         </div>
                     </div>
                     <div className="row">
                         {crops.map(product => (
                             <div key={product._id} className="col-md-3 col-sm-12 my-3" style={{ maxWidth: "22rem" }} >
                                 <div className="card h-100 shadow-sm rounded text-center bg-light ">
-                                    <img style={{aspectRatio: "16/10",objectFit:"cover"}} src={product.image} alt="" className="card-img-top img-thumbnail cursor-pointer" onClick={() => { handleButtonClick(product._id) }} />
+                                    <img style={{ aspectRatio: "16/10", objectFit: "cover" }} src={product.image} alt="" className="card-img-top img-thumbnail cursor-pointer" onClick={() => { handleButtonClick(product._id) }} />
                                     <div className="card-body d-flex flex-column justify-content-between align-items-start">
                                         <div className="card-body w-100  ">
                                             <button className="d-flex flex-row-reverse position-absolute end-0 me-3 btn bg-transparent " onClick={() => { displayAction(product._id) }}><i className="fa-solid fa-ellipsis-vertical"></i></button>

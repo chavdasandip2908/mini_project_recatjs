@@ -37,9 +37,13 @@ function Index() {
             setIsSignUp(false);
             // console.log('user register successfully:', response);
         } catch (error) {
+            if (error.isAxiosError && error.response) {
+                toast.error(error.response.data.error, { duration: 3000 });
+            } else {
+                toast.error(error.message, { duration: 3000 });
+            }
             console.error('Error register user:', error);
             setIsLoading(false);
-            toast.error(error.message, { duration: 3000 });
         }
     }
     const loginApi = async () => {
@@ -52,9 +56,13 @@ function Index() {
             // console.log('user login successfully:', response);
             navigate("/krishi-cash/home");
         } catch (error) {
+            if (error.isAxiosError && error.response) {
+                toast.error(error.response.data.error, { duration: 3000 });
+            } else {
+                toast.error(error.message, { duration: 3000 });
+            }
             console.error('Error login user:', error);
             setIsLoading(false);
-            toast.error(error.message, { duration: 3000 });
         }
     }
 

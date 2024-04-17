@@ -5,8 +5,9 @@ import toast, { Toaster } from 'react-hot-toast';
 
 import '../Dashboard/Product.css'
 import axios from 'axios';
-import { BEURL } from './common';
+import { BEURL, signoutHandler } from './common';
 import { Grid } from 'react-loader-spinner';
+import DataNotPresentPage from './DataNotPresentPage';
 
 const Product = () => {
 
@@ -30,15 +31,23 @@ const Product = () => {
             .then(response => {
                 setCropIncomes(response.data.cropsincomeid);
                 setIsLoading(false);
-                toast.success("fetch Cropincomes successfully ", { duration: 3000 });
+                // toast.success("fetch Cropincomes successfully ", { duration: 3000 });
                 // console.log('Response:', response);
             })
             .catch(error => {
                 console.error('Error:', error);
-                toast.error(error.message, { duration: 3000 });
+                if (error.code === 'INVALID_TOKEN') {
+                    signoutHandler(navigate);
+                }
+                else if (error.isAxiosError && error.response) {
+                    toast.error(error.response.data.error, { duration: 3000 });
+                } else {
+                    toast.error(error.message, { duration: 3000 });
+                }
+
                 setIsLoading(false);
             });
-    }, [headers]);
+    }, [headers, navigate]);
 
     useEffect(() => {
         setToken(window.localStorage.getItem('krishi-cash-user-token'));
@@ -93,7 +102,11 @@ const Product = () => {
             setIsLoading(false);
         } catch (error) {
             console.error('Error adding crop:', error);
-            toast.error(error.message, { duration: 3000 });
+            if (error.isAxiosError && error.response) {
+                toast.error(error.response.data.error, { duration: 3000 });
+            } else {
+                toast.error(error.message, { duration: 3000 });
+            }
             setIsLoading(false);
         }
     }
@@ -107,7 +120,11 @@ const Product = () => {
             setIsLoading(false);
         } catch (error) {
             console.error('Error adding crop:', error);
-            toast.error(error.message, { duration: 3000 });
+            if (error.isAxiosError && error.response) {
+                toast.error(error.response.data.error, { duration: 3000 });
+            } else {
+                toast.error(error.message, { duration: 3000 });
+            }
             setIsLoading(false);
         }
     }
@@ -121,7 +138,11 @@ const Product = () => {
             setIsLoading(false);
         } catch (error) {
             console.error('Error adding crop:', error);
-            toast.error(error.message, { duration: 3000 });
+            if (error.isAxiosError && error.response) {
+                toast.error(error.response.data.error, { duration: 3000 });
+            } else {
+                toast.error(error.message, { duration: 3000 });
+            }
             setIsLoading(false);
         }
     }
@@ -199,62 +220,67 @@ const Product = () => {
                         </div>
                         <button className='btn btn-success float-end m-2' onClick={() => setIsFormVisible(true)}>+ Add New Income</button>
                     </div>
-                    <table className={isSmall ? "table-sm mt-3 table table-bordered table-striped " : "table-lg mt-3 table table-bordered table-striped "} id="tableOne">
-                        <thead className="thead-dark table-responsive-stack-thead">
-                            <tr>
-                                <th>Date</th>
-                                <th>Price Per Mounds</th>
-                                <th>Weight Per Mounds</th>
-                                <th>Weight Per KG</th>
-                                <th>Total</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {
-                                cropIncomes.map((item, index) => {
-                                    return (
-                                        <tr key={index}>
-                                            <td>
-                                                <span className="movi fw-bold text-secondary-emphasis ">Date</span>
-                                                <span>{item.date}</span>
-                                            </td>
-                                            <td>
-                                                <span className="movi fw-bold text-secondary-emphasis ">Price Per Mounds</span>
-                                                <span>{item.price}</span>
-                                            </td>
-                                            <td>
-                                                <span className="movi fw-bold text-secondary-emphasis ">Weight Per Mounds</span>
-                                                <span>{(item.weight / 20).toFixed(2)}</span>
-                                            </td>
-                                            <td>
-                                                <span className="movi fw-bold text-secondary-emphasis ">Weight Per KG</span>
-                                                <span>{item.weight}</span>
-                                            </td>
-                                            <td>
-                                                <span className="movi fw-bold text-secondary-emphasis ">Total</span>
-                                                <span>{((item.weight / 20) * item.price).toFixed(2)}</span>
-                                            </td>
-                                            <td>
-                                                <span className="movi fw-bold text-secondary-emphasis ">Date</span>
-                                                <button className='btn' onClick={() => { displayAction(item._id) }}><i className="fa-solid fa-ellipsis-vertical"></i></button>
 
-                                                <div onClick={() => { displayAction(item._id) }} className='position-absolute d-none bg-light d-flex flex-column flex-nowrap align-content-start justify-content-center align-items-stretch gap-1 ' id={item._id} style={{ width: "5rem", marginLeft: "4rem" }}>
-                                                    <button type="button" className="border btn-warning btn rounded-1   "
-                                                        onClick={() => { setCropData(item); setEditId(item._id); setIsFormVisible(true) }}> Edit
-                                                    </button>
+                    {
+                        cropIncomes.length === 0 ?
+                            <DataNotPresentPage /> :
+                            <table className={isSmall ? "table-sm mt-3 table table-bordered table-striped " : "table-lg mt-3 table table-bordered table-striped "} id="tableOne">
+                                <thead className="thead-dark table-responsive-stack-thead">
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Price Per Mounds</th>
+                                        <th>Weight Per Mounds</th>
+                                        <th>Weight Per KG</th>
+                                        <th>Total</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {
+                                        cropIncomes.map((item, index) => {
+                                            return (
+                                                <tr key={index}>
+                                                    <td>
+                                                        <span className="movi fw-bold text-secondary-emphasis ">Date</span>
+                                                        <span>{item.date}</span>
+                                                    </td>
+                                                    <td>
+                                                        <span className="movi fw-bold text-secondary-emphasis ">Price Per Mounds</span>
+                                                        <span>{item.price}</span>
+                                                    </td>
+                                                    <td>
+                                                        <span className="movi fw-bold text-secondary-emphasis ">Weight Per Mounds</span>
+                                                        <span>{(item.weight / 20).toFixed(2)}</span>
+                                                    </td>
+                                                    <td>
+                                                        <span className="movi fw-bold text-secondary-emphasis ">Weight Per KG</span>
+                                                        <span>{item.weight}</span>
+                                                    </td>
+                                                    <td>
+                                                        <span className="movi fw-bold text-secondary-emphasis ">Total</span>
+                                                        <span>{((item.weight / 20) * item.price).toFixed(2)}</span>
+                                                    </td>
+                                                    <td>
+                                                        <span className="movi fw-bold text-secondary-emphasis ">Date</span>
+                                                        <button className='btn' onClick={() => { displayAction(item._id) }}><i className="fa-solid fa-ellipsis-vertical"></i></button>
 
-                                                    <button type="button" className="border btn-danger btn rounded-1 "
-                                                        onClick={() => setDeleteId(item._id)}> Delete
-                                                    </button>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    )
-                                })
-                            }
-                        </tbody>
-                    </table>
+                                                        <div onClick={() => { displayAction(item._id) }} className='position-absolute d-none bg-light d-flex flex-column flex-nowrap align-content-start justify-content-center align-items-stretch gap-1 ' id={item._id} style={{ width: "5rem", marginLeft: "4rem" }}>
+                                                            <button type="button" className="border btn-warning btn rounded-1   "
+                                                                onClick={() => { setCropData(item); setEditId(item._id); setIsFormVisible(true) }}> Edit
+                                                            </button>
+
+                                                            <button type="button" className="border btn-danger btn rounded-1 "
+                                                                onClick={() => setDeleteId(item._id)}> Delete
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            )
+                                        })
+                                    }
+                                </tbody>
+                            </table>
+                    }
                 </div >
             )}
             {/* Edit Popup */}
@@ -273,7 +299,7 @@ const Product = () => {
                             </div>
                             <div className="mb-3">
                                 <label className="form-label">Weight</label>
-                                <input className='form-control' inputMode='numeric'  type="number" value={cropData.weight} onChange={(e) => setCropData({ ...cropData, weight: e.target.value })} placeholder='crop weight in Kg' />
+                                <input className='form-control' inputMode='numeric' type="number" value={cropData.weight} onChange={(e) => setCropData({ ...cropData, weight: e.target.value })} placeholder='crop weight in Kg' />
                             </div>
                             <div className='mt-2 d-flex justify-content-end  align-items-center w-100 gap-2 '>
                                 <button className='btn btn-secondary' onClick={() => { closeFormBtn() }}>Cancel</button>
