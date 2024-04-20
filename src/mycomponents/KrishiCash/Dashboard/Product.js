@@ -36,7 +36,7 @@ const Product = () => {
             })
             .catch(error => {
                 console.error('Error:', error);
-                if (error.code === 'INVALID_TOKEN') {
+                if (error.response.data.code === 'INVALID_TOKEN') {
                     signoutHandler(navigate);
                 }
                 else if (error.isAxiosError && error.response) {
