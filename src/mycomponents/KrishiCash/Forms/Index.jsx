@@ -53,6 +53,7 @@ function Index() {
             window.localStorage.setItem('krishi-cash-user-token', response.data.token);
             toast.success("User login successfully", { duration: 3000 });
             setIsLoading(false);
+
             // console.log('user login successfully:', response);
             navigate("/krishi-cash/home");
         } catch (error) {

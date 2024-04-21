@@ -36,10 +36,11 @@ const Index = () => {
             })
             .catch(error => {
                 console.error('Error:', error);
-                if (error.response.data.code === 'INVALID_TOKEN') {
+                if (error.response.data.code === 'INVALID_TOKEN' && error.response.status === 403) {
+                    // toast.error(error.response.data.message, { duration: 3000 });
                     signoutHandler(navigate);
                 }
-                if (error.isAxiosError && error.response) {
+                else if (error.response && error.response.status !== 403) {
                     toast.error(error.response.data.error, { duration: 3000 });
                 } else {
                     toast.error(error.message, { duration: 3000 });
