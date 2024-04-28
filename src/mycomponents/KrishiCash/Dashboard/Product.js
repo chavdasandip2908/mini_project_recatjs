@@ -20,6 +20,13 @@ const Product = () => {
     const [cropIncomes, setCropIncomes] = useState([]);
     const [isSmall, setIsSmall] = useState(false);
     const [token, setToken] = useState("");
+    const [croptotal, setCroptotal] = useState({
+        totalIncome: "",
+        totalweight: "",
+        sumtotalIncome: "",
+        hignPrice: "",
+        lowPrice: ""
+    });
     const headers = useMemo(() => ({
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
@@ -30,21 +37,44 @@ const Product = () => {
         axios.get(`${BEURL}/api/crops/${cropsId}`, { headers })
             .then(response => {
                 setCropIncomes(response.data.cropsincomeid);
+                let sumofweight = 0, sumofprice = 0, sumOftotalIncome = 0, maxPrice = 0, minPrice = 0;
+                response.data.cropsincomeid.forEach((cropsincome) => {
+                    sumofprice += +cropsincome.price;
+                    sumofweight += +cropsincome.weight;
+                    sumOftotalIncome += ((cropsincome.weight / 20) * cropsincome.price)
+
+                    if (maxPrice < +cropsincome.price) {
+                        maxPrice = +cropsincome.price;
+                    }
+
+                    if (minPrice > +cropsincome.price || minPrice === 0) {
+                        minPrice = +cropsincome.price;
+                    }
+                });
+
+                setCroptotal({
+                    ...croptotal,
+                    totalIncome: sumofprice,
+                    totalweight: sumofweight,
+                    sumtotalIncome: sumOftotalIncome,
+                    hignPrice: maxPrice,
+                    lowPrice: minPrice
+                });
                 setIsLoading(false);
                 // toast.success("fetch Cropincomes successfully ", { duration: 3000 });
                 // console.log('Response:', response);
             })
             .catch(error => {
                 console.error('Error:', error);
-                if (error.response.data.code === 'INVALID_TOKEN') {
+                if (error.response.data.code === 'INVALID_TOKEN' && error.response.status === 403) {
+                    // toast.error(error.response.data.message, { duration: 3000 });
                     signoutHandler(navigate);
                 }
-                else if (error.isAxiosError && error.response) {
+                else if (error.response && error.response.status !== 403) {
                     toast.error(error.response.data.error, { duration: 3000 });
                 } else {
                     toast.error(error.message, { duration: 3000 });
                 }
-
                 setIsLoading(false);
             });
     }, [headers, navigate]);
@@ -246,7 +276,7 @@ const Product = () => {
                                                     </td>
                                                     <td>
                                                         <span className="movi fw-bold text-secondary-emphasis ">Price Per Mounds</span>
-                                                        <span>{item.price}</span>
+                                                        <span className={croptotal.hignPrice === +item.price ? "text-success" : croptotal.lowPrice === +item.price && "text-danger"}>{item.price}</span>
                                                     </td>
                                                     <td>
                                                         <span className="movi fw-bold text-secondary-emphasis ">Weight Per Mounds</span>
@@ -277,7 +307,31 @@ const Product = () => {
                                                 </tr>
                                             )
                                         })
+
                                     }
+                                    <tr>
+                                        <td>
+                                            <span className='fw-bold text-secondary-emphasis  '>Total</span>
+                                        </td>
+                                        <td>
+                                            <span className='fw-bold text-secondary-emphasis  '>-</span>
+                                        </td>
+                                        <td>
+                                            <span className="movi fw-bold text-secondary-emphasis ">Total Weight in Mounds</span>
+                                            <span className='fw-bold text-secondary-emphasis  '>{(croptotal.totalweight / 20).toFixed(2)}</span>
+                                        </td>
+                                        <td>
+                                            <span className="movi fw-bold text-secondary-emphasis ">Total Weight in KG</span>
+                                            <span className='fw-bold text-secondary-emphasis  '>{croptotal.totalweight}</span>
+                                        </td>
+                                        <td>
+                                            <span className="movi fw-bold text-secondary-emphasis ">Total Income</span>
+                                            <span className='fw-bold text-secondary-emphasis  '>{(croptotal.sumtotalIncome)}</span>
+                                        </td>
+                                        <td>
+                                            <span className='fw-bold text-secondary-emphasis  '>-</span>
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                     }
