@@ -15,32 +15,37 @@ const Index = () => {
     const navigate = useNavigate();
     const [crops, setCrops] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [token, setToken] = useState("");
 
 
     const headers = useMemo(() => ({
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `Bearer ${window.localStorage.getItem('krishi-cash-user-token')}`,
         'Content-Type': 'application/json'
-    }), [token]);
-
+    }), []);
 
     const fetchCropData = useCallback(() => {
         setIsLoading(true);
-        axios.get(`${BEURL}/api/crops`, { headers })
+
+        fetch(`${BEURL}/api/crops`, {
+            method: 'GET',
+            headers: headers,
+        })
             .then(response => {
-                // console.log('Response:', response.data);
-                setCrops(response.data);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                setCrops(data);
                 setIsLoading(false);
                 // toast.success("fetch Crops successfully ", { duration: 3000 });
-
             })
             .catch(error => {
                 console.error('Error:', error);
-                if (error.response.data.code === 'INVALID_TOKEN' && error.response.status === 403) {
+                if (error.response && error.response.status === 403 && error.response.data.code === 'INVALID_TOKEN') {
                     // toast.error(error.response.data.message, { duration: 3000 });
                     signoutHandler(navigate);
-                }
-                else if (error.response && error.response.status !== 403) {
+                } else if (error.response && error.response.status !== 403) {
                     toast.error(error.response.data.error, { duration: 3000 });
                 } else {
                     toast.error(error.message, { duration: 3000 });
@@ -48,6 +53,7 @@ const Index = () => {
                 setIsLoading(false);
             });
     }, [headers, navigate]);
+
 
     const updateCropApi = async () => {
         setIsLoading(true);
@@ -109,14 +115,13 @@ const Index = () => {
 
     useEffect(() => {
         // call api for get all crops
-        setToken(window.localStorage.getItem('krishi-cash-user-token'));
         if (window.localStorage.getItem('krishi-cash-user-token')) {
             fetchCropData();
         }
         else {
             navigate('/krishi-cash');
         }
-    }, [token, fetchCropData, navigate]);
+    }, [ fetchCropData, navigate]);
 
     const displayAction = (id) => {
         let ele = document.getElementById(id);
