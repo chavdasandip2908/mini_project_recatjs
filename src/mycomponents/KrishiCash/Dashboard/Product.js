@@ -20,6 +20,12 @@ const Product = () => {
     const [cropIncomes, setCropIncomes] = useState([]);
     const [isSmall, setIsSmall] = useState(false);
     const [token, setToken] = useState("");
+    const [cropDetail, setCropDetail] = useState({
+        name: "",
+        year: "",
+        season: "",
+        image: ""
+    });
     const [croptotal, setCroptotal] = useState({
         totalIncome: "",
         totalweight: "",
@@ -36,6 +42,13 @@ const Product = () => {
         setIsLoading(true);
         axios.get(`${BEURL}/api/crops/${cropsId}`, { headers })
             .then(response => {
+                setCropDetail({
+                    ...cropDetail,
+                    name: response.data.name,
+                    year: response.data.year,
+                    season: response.data.type,
+                    image: response.data.image
+                })
                 setCropIncomes(response.data.cropsincomeid);
                 let sumofweight = 0, sumofprice = 0, sumOftotalIncome = 0, maxPrice = 0, minPrice = 0;
                 response.data.cropsincomeid.forEach((cropsincome) => {
@@ -245,8 +258,14 @@ const Product = () => {
             ) : (
                 <div className="container " >
                     <div className="d-flex mt-5 flex-row flex-nowrap justify-content-between align-items-center">
-                        <div className="ms-1 cursor-pointer" onClick={() => { navigate('/krishi-cash/home') }}>
-                            <i className="fa-solid fa-arrow-left"></i>
+                        <div className='d-flex align-items-center '>
+                            <div className="ms-1 cursor-pointer" onClick={() => { navigate('/krishi-cash/home') }}>
+                                <i className="fa-solid fa-arrow-left"></i>
+                            </div>
+                            <div className='d-flex ms-4 gap-3 flex-row flex-nowrap justify-content-start  align-items-center'>
+                                <img className='rounded-circle border-1 shadow-lg border border-3' style={{ width: "4rem", height: "4rem" }} src={cropDetail.image} alt="load..." />
+                                <h4>{cropDetail.name}</h4>
+                            </div>
                         </div>
                         <button className='btn btn-success float-end m-2' onClick={() => setIsFormVisible(true)}>+ Add New Income</button>
                     </div>
@@ -254,6 +273,8 @@ const Product = () => {
                     {
                         cropIncomes.length === 0 ?
                             <DataNotPresentPage /> :
+
+
                             <table className={isSmall ? "table-sm mt-3 table table-bordered table-striped " : "table-lg mt-3 table table-bordered table-striped "} id="tableOne">
                                 <thead className="thead-dark table-responsive-stack-thead">
                                     <tr>
