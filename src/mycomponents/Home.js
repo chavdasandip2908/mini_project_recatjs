@@ -41,7 +41,7 @@ export default function Home() {
                         <span className="up">HI!</span>
                         <span className="down">I am Sandip Chavda</span>
                     </h1>
-                    <p className="header-subtitle">WEB DEVELOPMENT</p>
+                    <p className="header-subtitle">WEB DEVELOPER</p>
 
                     {/* <button className="btn btn-primary">Visit My Works</button> */}
                 </div>
