@@ -1,36 +1,12 @@
 import React from 'react'
 import "../css/meyawo.css"
 import ProjectCard from './Switch/ProjectCard'
-import ExpenseTracker from '../imgs/Expense Tracker.png'
-import StopWatch from '../imgs/Stop Watch.png'
-import KrishiCash from '../imgs/Krishi Cash.png'
-import ImageGallery from '../imgs/Image Gallery.png'
+
+import { projects } from "./comman";
 
 
 export default function Home() {
-    const projects = [
-        {
-            image: ExpenseTracker,
-            title: 'Expense Tracker',
-            link: '/expense-tracker'
-        },
-        {
-            image: StopWatch,
-            title: 'Stop Watch',
-            link: '/stop-watch'
-        },
-        {
-            image: ImageGallery,
-            title: 'Image Gallery',
-            link: '/image-gallery'
-        },
-        {
-            image: KrishiCash,
-            title: 'Krishi Cash',
-            link: '/krishi-cash'
-        },
-        
-    ];
+
     return (
         <div class="d-flex flex-column flex-nowrap align-items-center justify-content-start w-100">
 

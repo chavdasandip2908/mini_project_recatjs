@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
-// import navlink 
+
 import { NavLink } from "react-router-dom";
+
+import { projects } from "../comman";
 
 // style
 import './SideBar.css';
@@ -22,26 +24,14 @@ export default function SideBar() {
                             Home
                         </NavLink>
                     </li>
-                    <li className="mb-3">
-                        <NavLink to="/expense-tracker" className="align-items-center text-white text-decoration-none ">
-                            Expense Tracker
-                        </NavLink>
-                    </li>
-                    <li className="mb-3">
-                        <NavLink to="/stop-watch" className="align-items-center text-white text-decoration-none ">
-                            Stop Watch
-                        </NavLink>
-                    </li>
-                    <li className="mb-3">
-                        <NavLink to="/image-gallery" className="align-items-center text-white text-decoration-none ">
-                            Image Gallery
-                        </NavLink>
-                    </li>
-                    <li className="mb-3">
-                        <NavLink to="/krishi-cash" className="align-items-center text-white text-decoration-none ">
-                            Krishi Cash
-                        </NavLink>
-                    </li>
+                    {projects.map((project, index) => (
+                        <li className="mb-3">
+                            <NavLink to={project.link} className="align-items-center text-white text-decoration-none ">
+                                {project.title}
+                            </NavLink>
+                        </li>
+                    ))}
+
                     <li className="border-top my-3" />
                     <li className="mb-3">
                         <NavLink to="/" className="align-items-center text-white text-decoration-none ">
