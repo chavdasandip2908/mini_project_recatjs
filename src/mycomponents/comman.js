@@ -24,5 +24,10 @@ export const projects = [
         title: 'Krishi Cash',
         link: '/krishi-cash'
     },
+    {
+        image: KrishiCash,
+        title: 'Muti-StepForm',
+        link: '/muti-step-form'
+    },
     
 ];

@@ -9,6 +9,8 @@ import StopWatch from "./mycomponents/StopWatch/StopWatch";
 import ImageGallery from './mycomponents/ImageGallery/ImageGallery';
 import KrishiCash from './mycomponents/KrishiCash/Dashboard/Index';
 import KrishiCashForms from './mycomponents/KrishiCash/Forms/Index';
+import UserForm from './mycomponents/MutiStepForm/UserForm';
+
 
 
 import SideBar from "./mycomponents/SideBar/SideBar";
@@ -16,7 +18,6 @@ import Product from './mycomponents/KrishiCash/Dashboard/Product';
 import Test from './mycomponents/KrishiCash/Dashboard/Test';
 
 function App() {
-  console.log(process.env.REACT_APP_PIXEBAY_API_KEY);
   return (
     
       <BrowserRouter>
@@ -30,6 +31,7 @@ function App() {
           <Route path="/krishi-cash" element={<KrishiCashForms/>} />
           <Route path="/krishi-cash/home" element={<KrishiCash/>} />
           <Route path="/krishi-cash/produt-details" element={<Product/>} /> 
+          <Route path="/muti-step-form" element={<UserForm/>} /> 
           <Route path="/test" element={<Test/>}  /> 
 
         </Routes>

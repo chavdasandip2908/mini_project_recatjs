@@ -25,7 +25,7 @@ export default function SideBar() {
                         </NavLink>
                     </li>
                     {projects.map((project, index) => (
-                        <li className="mb-3">
+                        <li className="mb-3" key={index}>
                             <NavLink to={project.link} className="align-items-center text-white text-decoration-none ">
                                 {project.title}
                             </NavLink>
