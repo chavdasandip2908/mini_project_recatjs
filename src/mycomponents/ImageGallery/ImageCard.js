@@ -1,20 +1,11 @@
-import React from 'react'
+import React from 'react';
 
 export default function ImageCard({ image }) {
-
-  const tags = image.tags.split(",");
+  const tags = image.tags.split(',');
 
   function getCurrentDateTime() {
     const now = new Date();
-  
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, '0');
-    const day = String(now.getDate()).padStart(2, '0');
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const seconds = String(now.getSeconds()).padStart(2, '0');
-  
-    const formattedDateTime = `${year}${month}${day}${hours}${minutes}${seconds}`;
+    const formattedDateTime = now.toISOString().replace(/[-:.]/g, '');
     return formattedDateTime;
   }
 
@@ -22,10 +13,9 @@ export default function ImageCard({ image }) {
     try {
       const response = await fetch(url);
       const blob = await response.blob();
-
       const downloadLink = document.createElement('a');
       downloadLink.href = URL.createObjectURL(blob);
-      downloadLink.download = `iamge-gallary-${getCurrentDateTime()}.jpg`;
+      downloadLink.download = `image-gallery-${getCurrentDateTime()}.jpg`;
       document.body.appendChild(downloadLink);
       downloadLink.click();
       document.body.removeChild(downloadLink);
@@ -34,37 +24,63 @@ export default function ImageCard({ image }) {
     }
   };
 
-
   return (
-    <div className="col-12 col-sm-4 g-3 rounded overflow-hidden shadow-lg  ">
-      <button onClick={() => handleDownload(image.webformatURL)} className='position-absolute top-1 end-0 border-0 bg-transparent fs-3 me-2 text-light '><i class="fa-solid fa-download"></i></button>
-      <img className='w-100 rounded' src={image.webformatURL} alt="loading./.." />
-      <div className="px-6 py-4">
-        <div className="font-bold text-xl mb-2  px-3 fw-bold ">Photo by <span className='text-primary'>{image.user}</span></div>
-        <ul className='list-group bg-transparent '>
-          <li className='list-group-item border-0 bg-transparent'>
-            <strong>Views : </strong>
-            {image.views}
-          </li>
-          <li className='list-group-item border-0 bg-transparent'>
-            <strong>Downloads : </strong>
-            {image.downloads}
-          </li>
-          <li className='list-group-item border-0 bg-transparent'>
-            <strong>Likes : </strong>
-            {image.likes}
-          </li>
-        </ul>
-      </div>
-      <div className="px-6 py-4 overflow-auto">
-        {
-          tags.map((tag, index) => (
-            <div className=" badge badge-secondary p-1 px-2 mx-1">
-              #{tag}
-            </div>
-          ))
-        }
+    <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
+      <div
+        className="card h-100 shadow-sm border-0 rounded overflow-hidden position-relative"
+        style={{ transition: 'transform 0.3s ease-in-out' }}
+        onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
+        onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
+      >
+        <button
+          onClick={() => handleDownload(image.webformatURL)}
+          className="btn position-absolute top-0 end-0 m-2 p-2 text-white  z-1"
+          style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)', border: 'none', cursor: "pointer" }}
+          onMouseEnter={e => e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.8)'}
+          onMouseLeave={e => e.currentTarget.style.backgroundColor = 'rgba(0, 0, 0, 0.6)'}
+        >
+          <i className="fas fa-download"></i>
+        </button>
+
+        {/* Aspect Ratio Container */}
+        <div style={{
+          position: 'relative',
+          width: '100%',
+          paddingTop: '75%' // This sets a 4:3 aspect ratio (3/4 = 75%)
+        }}>
+          <img
+            className="card-img-top img-fluid"
+            src={image.webformatURL}
+            alt="Loading..."
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover' // Ensures the image fits the container
+            }}
+          />
+        </div>
+
+        <div className="card-body">
+          <h5 className="card-title">Photo by <span className="text-primary">{image.user}</span></h5>
+          <ul className="list-group list-group-flush">
+            <li className="list-group-item"><strong>Views:</strong> {image.views}</li>
+            <li className="list-group-item"><strong>Downloads:</strong> {image.downloads}</li>
+            <li className="list-group-item"><strong>Likes:</strong> {image.likes}</li>
+          </ul>
+        </div>
+        <div className="card-footer">
+          <div className="d-flex flex-wrap">
+            {tags.map((tag, index) => (
+              <span key={index} className="badge bg-secondary me-1 mb-1" style={{ fontSize: '0.8rem' }}>
+                #{tag}
+              </span>
+            ))}
+          </div>
+        </div>
       </div>
     </div>
-  )
+  );
 }
