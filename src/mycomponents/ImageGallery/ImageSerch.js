@@ -1,23 +1,54 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
-function ImageSerch({ setText }) {
-  const [serchText, setSerchText] = useState("");
+function ImageSearch({ setText }) {
+  const [searchText, setSearchText] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (serchText) setText(serchText)
+    if (searchText) setText(searchText);
   }
 
   return (
     <div>
-      <div className='bg-transparent text-center my-4 fs-5'  >
-        <form onSubmit={handleSubmit} className='mx-auto w-25 px-3 gap-1 ' style={{ minWidth: 'fit-content' }}>
-          <input className='bg-transparent border-0 border-bottom p-1 my-1 w-75  ' style={{ outline: "0" }} type='text' placeholder='search....' value={serchText} onChange={(e) => setSerchText(e.target.value)} />
-          <button className=' border-0 border-bottom rounded p-1 px-2 my-1 fw-bold text-light w-25 ' style={{ background: "#04a31d" }} type='submit'>Submit</button>
-        </form >
+      <div className='d-flex justify-content-center align-items-center my-4'>
+        <form onSubmit={handleSubmit} className='d-flex w-75 gap-3'>
+          {/* Search input */}
+          <input 
+            className='form-control p-2 shadow-sm border-0' 
+            style={{
+              borderRadius: '30px', 
+              fontSize: '1.2rem', 
+              transition: 'all 0.3s ease-in-out', 
+              outline: 'none',
+              backgroundColor: '#f1f3f5'
+            }} 
+            type='text' 
+            placeholder='Search for images...' 
+            value={searchText} 
+            onChange={(e) => setSearchText(e.target.value)} 
+          />
+
+          {/* Submit button */}
+          <button 
+            className='btn text-light shadow-sm' 
+            style={{
+              backgroundColor: '#04a31d',
+              borderRadius: '30px', 
+              padding: '10px 30px', 
+              fontSize: '1.2rem',
+              fontWeight: 'bold',
+              transition: 'background-color 0.3s ease-in-out',
+            }} 
+            type='submit'
+            onMouseEnter={e => e.currentTarget.style.backgroundColor = '#037018'} // Darker shade on hover
+            onMouseLeave={e => e.currentTarget.style.backgroundColor = '#04a31d'}
+          >
+            Search
+          </button>
+        </form>
       </div>
     </div>
-  )
+  );
 }
 
-export default ImageSerch
+export default ImageSearch;
