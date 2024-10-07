@@ -25,10 +25,13 @@ export default function ImageCard({ image }) {
   };
 
   return (
-    <div className="col-lg-3 col-md-6 col-sm-12 mb-4">
+    <div className="col-lg-3 col-md-6 col-sm-12 mb-4 ">
       <div
-        className="card h-100 shadow-sm border-0 rounded overflow-hidden position-relative"
-        style={{ transition: 'transform 0.3s ease-in-out' }}
+        className="card h-100 shadow border-0 rounded overflow-hidden position-relative"
+        style={{
+          transition: 'transform 0.3s ease-in-out',
+          
+        }}
         onMouseEnter={e => e.currentTarget.style.transform = 'scale(1.05)'}
         onMouseLeave={e => e.currentTarget.style.transform = 'scale(1)'}
       >
@@ -58,7 +61,8 @@ export default function ImageCard({ image }) {
               left: 0,
               width: '100%',
               height: '100%',
-              objectFit: 'cover' // Ensures the image fits the container
+              objectFit: 'cover',
+              borderRadius: '8px 8px 0 0'
             }}
           />
         </div>
@@ -72,14 +76,16 @@ export default function ImageCard({ image }) {
           </ul>
         </div>
         <div className="card-footer">
-          <div className="d-flex flex-wrap">
+          <div className="d-flex flex-nowrap" style={{ overflowX: 'auto', WebkitOverflowScrolling: 'touch', scrollbarWidth: 'none' }}>
             {tags.map((tag, index) => (
-              <span key={index} className="badge bg-secondary me-1 mb-1" style={{ fontSize: '0.8rem' }}>
+              <span key={index} className="badge bg-secondary me-1 mb-1" style={{ fontSize: '0.8rem', whiteSpace: 'nowrap' }}>
                 #{tag}
               </span>
             ))}
           </div>
         </div>
+
+
       </div>
     </div>
   );
