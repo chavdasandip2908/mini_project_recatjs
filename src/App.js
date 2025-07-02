@@ -32,7 +32,7 @@ function App() {
           <Route path="/krishi-cash/home" element={<KrishiCash/>} />
           <Route path="/krishi-cash/produt-details" element={<Product/>} /> 
           <Route path="/muti-step-form" element={<UserForm/>} /> 
-          <Route path="/test" element={<Test/>}  /> 
+          <Route path="*" element={<Home/>}  /> 
 
         </Routes>
       </BrowserRouter>
